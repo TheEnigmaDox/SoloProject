@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkeletonWarrior : Character
@@ -10,22 +11,18 @@ public class SkeletonWarrior : Character
     // Start is called before the first frame update
     void Start()
     {
-        m_characterController = GetComponent<CharacterController>();
-        m_currentSpeed = m_walkSpeed;
+        //m_characterController = GetComponent<CharacterController>();
+        m_rigidBody = GetComponent<Rigidbody>();  
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveCharacter(m_viewPoint);
+        MoveCamera();
+    }
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
-        {
-            CharacterRun();
-        }
-        else
-        {
-            CharacterWalk();
-        }
+    private void FixedUpdate()
+    {
+        MoveCharacter();
     }
 }
