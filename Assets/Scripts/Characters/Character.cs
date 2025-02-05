@@ -5,35 +5,22 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [Header("Movement")]
-    protected float m_moveSpeed = 5f;
+    protected float m_currentSpeed;
+    protected float m_movementSpeed = 150;
+    protected float m_runSpeed = 250;
+    protected float m_jumpForce = 10;
+    protected Vector3 m_playerMovementInput;
+    protected Vector2 m_playerMouseInput;
+    [SerializeField]
+    protected Transform m_playerCamera;
 
     [Header("Mouse Settings")]
-    protected float m_mouseSensitivity = 1f;
-    private float m_xRotation = 0f;
+    [SerializeField]
+    protected float m_mouseSensitivity = 1;
+    protected float m_xRotation;
+    protected float m_yRotation;
 
-    protected Rigidbody m_rigidBody;
-
-    protected void MoveCamera()
-    {
-        float mouseX = Input.GetAxisRaw("Mouse X") * m_mouseSensitivity;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * m_mouseSensitivity;
-
-        m_xRotation -= mouseY;
-        m_xRotation = Mathf.Clamp(m_xRotation, -60f, 60f);
-        Camera.main.transform.localRotation = Quaternion.Euler(m_xRotation, 0, 0);
-
-        transform.Rotate(Vector3.up * mouseX);
-    }
-
-    protected void MoveCharacter()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
-
-        Vector3 direction = (Camera.main.transform.forward * verticalInput + Camera.main.transform.right * horizontalInput).normalized;
-
-        Vector3 movement = direction * m_moveSpeed;
-        Vector3 velocity = new Vector3(movement.x, m_rigidBody.velocity.y, movement.z);
-        m_rigidBody.velocity = velocity;
-    }
+    [Header("Components")]
+    protected Rigidbody m_rigidbody;
+    protected Animator m_animator;
 }
