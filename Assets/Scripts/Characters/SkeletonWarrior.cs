@@ -10,6 +10,7 @@ public class SkeletonWarrior : Character
     {
         m_rigidbody = GetComponent<Rigidbody>();
         m_animator = GetComponent<Animator>();
+        m_currentSpeed = m_walkSpeed;
     }
 
     // Update is called once per frame
@@ -18,15 +19,23 @@ public class SkeletonWarrior : Character
         m_playerMovementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
         m_playerMouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            m_currentSpeed = m_runSpeed;
+        }
+        else
+        {
+            m_currentSpeed = m_walkSpeed;
+        }
+
         MovePlayer();
         MoveCamera();
     }
 
     private void MovePlayer()
     {
-        Vector3 moveVector = transform.TransformDirection(m_playerMovementInput) * m_movementSpeed * Time.deltaTime;
-        m_rigidbody.velocity = new Vector3(moveVector.x, m_rigidbody.velocity.y, moveVector.z);
-
+        Vector3 moveVector = transform.TransformDirection(m_playerMovementInput) * m_currentSpeed * Time.deltaTime;
+        
         if(m_rigidbody.velocity.z != 0 && Input.GetKey(KeyCode.W))
         {
             m_animator.SetBool("MovingForward", true);
@@ -49,6 +58,8 @@ public class SkeletonWarrior : Character
         {
             m_rigidbody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
         }
+
+        m_rigidbody.velocity = new Vector3(moveVector.x, m_rigidbody.velocity.y, moveVector.z);
     }
 
     private void MoveCamera()

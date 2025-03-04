@@ -6,8 +6,8 @@ public class Character : MonoBehaviour
 {
     [Header("Movement")]
     protected float m_currentSpeed;
-    protected float m_movementSpeed = 150;
-    protected float m_runSpeed = 250;
+    protected float m_walkSpeed = 200;
+    protected float m_runSpeed = 350;
     protected float m_jumpForce = 10;
     protected Vector3 m_playerMovementInput;
     protected Vector2 m_playerMouseInput;
