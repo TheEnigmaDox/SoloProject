@@ -12,6 +12,7 @@ public class SkeletonWarrior : PlayerCharacter
         m_animator = GetComponent<Animator>();  
 
         m_currentSpeed = m_walkSpeed;
+        m_isRunning = false;
     }
 
     // Update is called once per frame
@@ -20,6 +21,7 @@ public class SkeletonWarrior : PlayerCharacter
         AnimateCharacter();
         MoveCamera();
         MovePlayer();
+        CharacterAttack();
     }
 
     private void LateUpdate()
@@ -41,7 +43,7 @@ public class SkeletonWarrior : PlayerCharacter
             m_viewPoint.rotation = Quaternion.Euler(m_verticalRotStore, m_viewPoint.rotation.eulerAngles.y, m_viewPoint.rotation.eulerAngles.z);
         }
 
-        m_mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y") * m_mouseSensitivity);
+        m_mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y") * SettingsManager.m_mouseSensitivity);
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + m_mouseInput.x, transform.rotation.eulerAngles.z);
 
@@ -53,10 +55,12 @@ public class SkeletonWarrior : PlayerCharacter
     {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxisRaw("Vertical") > 0)
         {
+            m_isRunning = true;
             m_currentSpeed = m_runSpeed;
         }
         else
         {
+            m_isRunning = false;
             m_currentSpeed = m_walkSpeed;
         }
 
@@ -86,5 +90,24 @@ public class SkeletonWarrior : PlayerCharacter
             m_animator.SetFloat("Movement", 0);
         else if (Input.GetAxisRaw("Vertical") < 0)
             m_animator.SetFloat("Movement", -1);
+
+        m_animator.SetBool("IsRunning", m_isRunning);
+
+        m_animator.SetBool("IsAttacking", m_isAttacking);
+    }
+
+    private void CharacterAttack()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            m_isAttacking = true;
+            StartCoroutine(AttackWaitTime());
+        }
+    }
+
+    IEnumerator AttackWaitTime()
+    {
+        yield return new WaitForSeconds(1);
+        m_isAttacking = false;
     }
 }

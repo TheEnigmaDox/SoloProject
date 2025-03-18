@@ -10,12 +10,13 @@ public class PlayerCharacter : MonoBehaviour
     protected float m_walkSpeed = 5f;
     [SerializeField]
     protected float m_runSpeed = 10f;
+    protected bool m_isRunning;
 
     [Header("Character Jumping")]
     protected float m_jumpForce = 6f;
 
     [Header("Camera Movement")]
-    protected float m_mouseSensitivity = 1f;
+    //protected float m_mouseSensitivity = 1f;
     protected float m_verticalRotStore;
     protected Vector2 m_mouseInput;
     [SerializeField]
@@ -28,12 +29,10 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     protected CharacterController m_characterController;
 
+    [Header("Character Damaging")]
+    protected bool m_isAttacking;
+
     [Header("Components/GameObjects")]
     protected Animator m_animator;
     protected Camera m_mainCam;
-}
-
-public class EnemeyCharacter : MonoBehaviour
-{
-
 }
