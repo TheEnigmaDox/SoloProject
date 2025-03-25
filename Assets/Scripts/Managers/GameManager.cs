@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public List<GameObject> m_treasureObjects;
+
     private void Awake()
     {
         if(Instance == null)
@@ -39,11 +41,6 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
-        }
-
-        if(Input.GetKey(KeyCode.Return))
-        {
-            SceneManager.LoadScene("New Scene");
         }
     }
 }
