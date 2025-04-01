@@ -24,7 +24,7 @@ public class EnemyCharacter : MonoBehaviour
     public int m_enemyHealth = 100;
 
     [SerializeField]
-    private Transform m_target;
+    private GameObject m_target;
 
     private Animator m_animator;
 
@@ -35,15 +35,21 @@ public class EnemyCharacter : MonoBehaviour
     {
         m_animator = GetComponent<Animator>();
         m_meshAgent = GetComponent<NavMeshAgent>();
-        m_target = GameManager.Instance.m_treasureObjects[Random.Range(0, GameManager.Instance.m_treasureObjects.Count)].transform;
+        
         m_currentAttackTime = m_attackTime;
+    }
+
+    private void Start()
+    {
+        m_target = GameObject.FindWithTag("Spawner").GetComponent<EnemySpawner>().m_targetTreasure[Random.Range(0,
+            GameObject.FindWithTag("Spawner").GetComponent<EnemySpawner>().m_targetTreasure.Count)];
     }
 
     private void Update()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, m_target.position);
+        float distanceToTarget = Vector3.Distance(transform.position, m_target.transform.position);
 
-        Debug.Log("Distance to Target: " + distanceToTarget);
+        //Debug.Log("Distance to Target: " + distanceToTarget);
 
         if (transform.position != m_target.transform.position)
         {
@@ -59,10 +65,15 @@ public class EnemyCharacter : MonoBehaviour
             m_isMoving = false;
         }
 
-        if(distanceToTarget < 2.5f)
+        if (distanceToTarget < 2.5f)
         {
-            Debug.Log("Destination reached!");
-            Attack();
+            m_currentAttackTime -= Time.deltaTime;
+
+            if (m_currentAttackTime <= 0)
+            {
+                Attack();
+                m_currentAttackTime = m_attackTime;
+            }
         }
  
         AnimateEnemy();
@@ -76,19 +87,19 @@ public class EnemyCharacter : MonoBehaviour
 
     void Attack()
     {
+        TreasureHealth targetHealth = m_target.GetComponent<TreasureHealth>();
+
         m_currentAttackTime -= Time.deltaTime;
 
-        if (m_currentAttackTime <= 0)
-        {
-            m_canAttack = true;
-            StartCoroutine(TimeBetweenAttacks());
-        }
+        m_canAttack = true;
+
+        targetHealth.TakeDamage(10);
+        StartCoroutine(TimeBetweenAttacks());
     }
 
     IEnumerator TimeBetweenAttacks()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.3f);
         m_canAttack = false;
-        m_currentAttackTime = m_attackTime;
     }
 }

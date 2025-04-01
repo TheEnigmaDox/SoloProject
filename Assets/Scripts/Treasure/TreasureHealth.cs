@@ -11,7 +11,12 @@ public class TreasureHealth : MonoBehaviour
     {
         if(m_treasureHealth <= 0)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        m_treasureHealth -= damage;
     }
 }

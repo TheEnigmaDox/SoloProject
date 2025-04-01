@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public List<GameObject> m_treasureObjects;
-
     private void Awake()
     {
         if(Instance == null)
