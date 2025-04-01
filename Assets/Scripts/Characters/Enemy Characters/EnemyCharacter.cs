@@ -13,6 +13,8 @@ public enum EnemyType
 
 public class EnemyCharacter : MonoBehaviour
 {
+    public EnemySpawner m_spawner;
+
     public EnemyType m_enemyType;
 
     bool m_isMoving = false;
@@ -41,8 +43,7 @@ public class EnemyCharacter : MonoBehaviour
 
     private void Start()
     {
-        m_target = GameObject.FindWithTag("Spawner").GetComponent<EnemySpawner>().m_targetTreasure[Random.Range(0,
-            GameObject.FindWithTag("Spawner").GetComponent<EnemySpawner>().m_targetTreasure.Count)];
+        m_target = m_spawner.GetTarget();
     }
 
     private void Update()
@@ -77,6 +78,7 @@ public class EnemyCharacter : MonoBehaviour
         }
  
         AnimateEnemy();
+        DestroyMe();
     }
 
     private void AnimateEnemy()
@@ -87,9 +89,9 @@ public class EnemyCharacter : MonoBehaviour
 
     void Attack()
     {
-        TreasureHealth targetHealth = m_target.GetComponent<TreasureHealth>();
+        transform.LookAt(m_target.transform.position, Vector3.up);
 
-        m_currentAttackTime -= Time.deltaTime;
+        TreasureHealth targetHealth = m_target.GetComponent<TreasureHealth>();
 
         m_canAttack = true;
 
@@ -97,9 +99,18 @@ public class EnemyCharacter : MonoBehaviour
         StartCoroutine(TimeBetweenAttacks());
     }
 
+    void DestroyMe()
+    {
+        if(m_enemyHealth <= 0)
+        {
+            m_spawner.KillCount++;
+            Destroy(this.gameObject);
+        }
+    }
+
     IEnumerator TimeBetweenAttacks()
     {
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1f);
         m_canAttack = false;
     }
 }

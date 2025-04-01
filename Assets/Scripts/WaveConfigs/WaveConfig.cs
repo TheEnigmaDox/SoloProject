@@ -2,20 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Wave Gonfig", fileName = "New Wave Congig")]
-public class WaveConfig : ScriptableObject
+public static class WaveConfig
 {
-    public int m_waveCount;
+    public static int m_levelOneWaveCount = 10;
 
-    [SerializeField]
-    List<GameObject> m_targets;
-    public List<GameObject> GetTargets()
-    {
-        return m_targets;
-    }
+    public static int m_enemyCount = 10;
 
-    public int GetWaveCount()
-    {
-        return m_waveCount;
-    }
+    public static int m_levelOneEnemyIncrement = 5;
 }
