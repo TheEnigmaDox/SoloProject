@@ -32,8 +32,6 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         m_spawnTimer = m_spawnTime;
-
-        
     }
 
     // Update is called once per frame

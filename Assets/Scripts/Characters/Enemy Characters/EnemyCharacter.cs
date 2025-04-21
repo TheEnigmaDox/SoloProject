@@ -99,6 +99,11 @@ public class EnemyCharacter : MonoBehaviour
         StartCoroutine(TimeBetweenAttacks());
     }
 
+    public void TakeDamage(int damage)
+    {
+        m_enemyHealth -= damage;
+    }
+
     void DestroyMe()
     {
         if(m_enemyHealth <= 0)

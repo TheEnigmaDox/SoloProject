@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum WeaponType
+{
+    TwoHandAxe,
+    OneHandAxe
+};
+
 public class SkeletonWarrior : PlayerCharacter
 {
     // Start is called before the first frame update
